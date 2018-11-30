@@ -7,9 +7,15 @@ import './style/common'
 import './config/rem'
 
 import 'iview/src/styles/index.less';
-
 // 注册iView的组件为全局组件
 Vue.use(iView)
+
+// 富文本编辑器
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import VueQuillEditor from 'vue-quill-editor'
+Vue.use(VueQuillEditor)
 
 Vue.use(VueRouter)
 const router = new VueRouter({

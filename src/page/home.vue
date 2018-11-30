@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>{{account.name}}</div>
+    <div>用户：{{account.name}}</div>
     <div v-for="c in comments" :key="c.id">{{c.content}}</div>
     首页
     <a href="javascript:void(0)" @click="handleClick">添加评论</a>
@@ -19,14 +19,12 @@
       </div>
     </Modal>
 
-    <Modal :footer-hide="true" v-model="modal2" title="">
-      <Form :model="form2" ref="form2" :rules="rules2">
-        <FormItem label="" prop="content"> 
-          <i-input type="textarea" :maxlength="300" v-model.trim="form2.content" placeholder="文明社会，理性评论"></i-input>
-        </FormItem>
-      </Form>
+    <Modal :footer-hide="true" v-model="modal2" title="发布文章">
+      <div style="min-height: 300px;">
+        <quill-editor class="mt10" v-model.trim="form2.content" :maxlength="2000" :options="editorOption"></quill-editor>
+      </div>
 
-      <div class="tr">
+      <div class="tr mt10">
         <Button type="primary" @click="saveArticle">发布文章</Button>
         <Button class="ml10" type="default" @click="modal2=false">取消</Button>
       </div>
@@ -63,6 +61,19 @@ export default {
           { required: true, message: '请输入内容', trigger: 'blur' },
         ],
       },
+      editorOption: {
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            [{ header: 1 }, { header: 2 }],
+            [{ align: [] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['image'],
+          ]
+        },
+        placeholder: '输入内容'
+      }
     }
   },
   methods: {
@@ -79,7 +90,10 @@ export default {
     },
 
     saveArticle() {
-
+      if (!this.form2.content) {
+        this.$Message.warning('文章内容不能为空')
+        return;
+      }
     },
 
     handleClick() {
