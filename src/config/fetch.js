@@ -142,7 +142,6 @@ const createAsyncRequest = apiConfig => {
             }
             throw e.response.data
           } else {
-            console.log(e)
             catchError && console.log(e && e.message || '服务器繁忙')
             throw e.response.data
           }
