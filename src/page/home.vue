@@ -1,12 +1,27 @@
 <template>
   <div>
-    <div>用户：{{account.name}}</div>
-    <div v-for="c in comments" :key="c.id">{{c.content}}</div>
-    首页
-    <a href="javascript:void(0)" @click="handleClick">添加评论</a>
-    <div class="tc"><a href="javascript:void(0)" @click="handleAddArticle">添加文章</a></div>
+    <div class="banner">
+      <div class="banner-cont">
+        <div class="banner-title">中国人民解放军第一一七医院简介</div>
+        <div class="banner-subhead">中国人民解放军第一一七医院是南京军区所属的一所综合性三级甲等医院，医院位于杭州市灵隐风景区，院内绿树成荫、空气清新、环境优美，是驻浙陆海空三军唯一一所集医疗、教育、科研和预防保健于一体的中心医院。</div>
+      </div>
+      <div class="banner-mask"></div>
+    </div>
 
-    <Modal :footer-hide="true" v-model="modal1" title="">
+    <div class="content-wrap">
+      <div>用户：{{account.name}}</div>
+      <div v-for="c in comments" :key="c.id">{{c.content}}</div>
+
+      文章：
+      <div>
+        <div class="mt10" v-for="(n, idx) in news" :key="idx">{{n.title}}</div>
+      </div>
+      首页
+      <a href="javascript:void(0)" @click="handleClick">添加评论</a>
+      <div class="tc"><a href="javascript:void(0)" @click="handleAddArticle">添加文章</a></div>
+    </div>
+
+    <Modal :footer-hide="true" v-model="modal1" title="" :mask-closable="false">
       <Form :model="form1" ref="form1" :rules="rules">
         <FormItem label="" prop="content"> 
           <i-input type="textarea" :maxlength="300" v-model.trim="form1.content" placeholder="文明社会，理性评论"></i-input>
@@ -19,10 +34,9 @@
       </div>
     </Modal>
 
-    <Modal :footer-hide="true" v-model="modal2" title="发布文章">
-      <div style="min-height: 300px;">
-        <quill-editor class="mt10" v-model.trim="form2.content" :maxlength="2000" :options="editorOption"></quill-editor>
-      </div>
+    <Modal width="80%" :footer-hide="true" v-model="modal2" title="发布文章" :mask-closable="false">
+      <div class="w400"><i-input type="text" v-model.trim="form2.title" placeholder="请输入文章标题"></i-input></div>
+      <quill-editor class="mt10" v-model.trim="form2.content" :maxlength="2000" :options="editorOption"></quill-editor>
 
       <div class="tr mt10">
         <Button type="primary" @click="saveArticle">发布文章</Button>
@@ -51,9 +65,11 @@ export default {
       },
       account: {},
       comments: [],
+      news: [],
 
       modal2: false,
       form2: {
+        title: '',
         content: ''
       },
       rules2: {
@@ -83,6 +99,12 @@ export default {
       })
     },
 
+    getAllNews() {
+      api.getArticle().then(res => {
+        this.news = res;
+      })
+    },
+
     getComment(articleId) {
       api.getCommentByArticleId({data: {id: articleId}}).then(res => {
         this.comments = res;
@@ -90,10 +112,20 @@ export default {
     },
 
     saveArticle() {
+      if (!this.form2.title) {
+        this.$Message.warning('文章标题不能为空')
+        return;
+      }
       if (!this.form2.content) {
         this.$Message.warning('文章内容不能为空')
         return;
       }
+      let art = this.form2
+      api.addArticle({data: art}).then(res => {
+        this.modal2 = false;
+        this.$Message.success('发布文章成功')
+        this.getAllNews()
+      })
     },
 
     handleClick() {
@@ -119,11 +151,48 @@ export default {
   mounted() {
     this.getUser()
     this.getComment(1)
+    this.getAllNews()
   }
 }
 </script>
 
 <style lang="less">
+.ql-editor {
+  min-height: 200px;
+  max-height: 800px;
+  overflow-y: auto;
+}
 
+.banner {
+  position: relative;
+  min-height: 300px;
+  text-align: center;
+  background: url('https://mytijian-img.oss-cn-hangzhou.aliyuncs.com/hospital/117/official_site/banner.png') no-repeat center;
+  background-size: cover;
+  &-cont {
+    position: absolute;
+    width: 100%;
+    padding: 30px;
+    z-index: 2;
+    color: #000;
+  }
+  &-title {
+    font-size: 50px;
+    font-weight: bold;
+  }
+  &-subhead {
+    margin-top: 40px;
+    font-size: 20px;
+  }
+  &-mask {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #eee;
+    opacity: .7;
+    z-index: 1;
+  }
+}
 </style>
 
