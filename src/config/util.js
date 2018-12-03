@@ -1,0 +1,1 @@
+export const ossPath = 'https://mytijian-img.oss-cn-hangzhou.aliyuncs.com/hospital/117/official_site/';

@@ -8,18 +8,34 @@
       <div class="banner-mask"></div>
     </div>
 
-    <div class="content-wrap">
-      <div>用户：{{account.name}}</div>
-      <div v-for="c in comments" :key="c.id">{{c.content}}</div>
-
-      文章：
-      <div>
-        <div class="mt10" v-for="(n, idx) in news" :key="idx">{{n.title}}</div>
+    <div class="content-wrap pt20">
+      <div class="mb40">
+        <tab-head title="新闻资讯" />
+        <Row class="img-panel">
+          <i-col :span="12" class="p20"><img :src="newsImg" /></i-col>
+          <i-col :span="12" class="p20">
+            <div class="ptc100 ell" v-for="(n, idx) in news" :key="idx"><a href="javascript:void(0)">{{n.title}}</a></div>
+          </i-col>
+        </Row>
       </div>
-      首页
-      <a href="javascript:void(0)" @click="handleClick">添加评论</a>
-      <div class="tc"><a href="javascript:void(0)" @click="handleAddArticle">添加文章</a></div>
+
+      <tab-head title="医院简介" />
+      <Row v-for="(s, idx) in src.intro" :key="idx" class="img-panel">
+        <i-col :span="12" class="p20"><img :src="s.img" /></i-col>
+        <i-col :span="12" class="p20">{{s.desc}}</i-col>
+      </Row>
     </div>
+
+    <div>用户：{{account.name}}</div>
+    <div v-for="c in comments" :key="c.id">{{c.content}}</div>
+
+    文章：
+    <div>
+      <div class="mt10" v-for="(n, idx) in news" :key="idx">{{n.title}}</div>
+    </div>
+    首页
+    <a href="javascript:void(0)" @click="handleClick">添加评论</a>
+    <div class="tc"><a href="javascript:void(0)" @click="handleAddArticle">添加文章</a></div>
 
     <Modal :footer-hide="true" v-model="modal1" title="" :mask-closable="false">
       <Form :model="form1" ref="form1" :rules="rules">
@@ -48,11 +64,15 @@
 
 <script>
 import api from '../config/api'
+import src from './home.js'
+import Tabhead from '../components/tabhead'
+import { ossPath } from '../config/util'
 
 export default {
   name: 'home',
   data() {
     return {
+      src: src,
       modal1: false,
       form1: {
         articleId: 1,
@@ -85,11 +105,19 @@ export default {
             [{ align: [] }],
             ['bold', 'italic', 'underline', 'strike'],
             [{ list: 'ordered' }, { list: 'bullet' }],
-            ['image'],
+            // ['image'],
           ]
         },
         placeholder: '输入内容'
       }
+    }
+  },
+  components: {
+    'tab-head': Tabhead
+  },
+  computed: {
+    newsImg() {
+      return ossPath + 'cuoshi0202.png'
     }
   },
   methods: {
@@ -192,6 +220,19 @@ export default {
     background: #eee;
     opacity: .7;
     z-index: 1;
+  }
+}
+
+.img-panel {
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.news {
+  &-item {
+    width: 50%;
   }
 }
 </style>

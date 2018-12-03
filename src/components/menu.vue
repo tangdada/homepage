@@ -36,7 +36,6 @@ export default {
   },
 
   mounted() {
-    console.log(this.$route.path)
     this.currentTab = this.$route.path.replace('/', '')
   }
 }
