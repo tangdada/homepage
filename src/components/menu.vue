@@ -45,12 +45,12 @@ export default {
 .menu {
   border-bottom: 1px solid #eee;
   // margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 18px;
   &-item {
     display: inline-block;
     text-align: center;
     padding: 20px;
-    width: 110px;
+    width: 120px;
     cursor: pointer;
     &.on {
       border-bottom: 2px solid #00b493;

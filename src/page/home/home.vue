@@ -14,7 +14,7 @@
         <Row class="img-panel">
           <i-col :span="12" class="p20"><img :src="newsImg" /></i-col>
           <i-col :span="12" class="p20">
-            <div class="ptc100 ell" v-for="(n, idx) in news" :key="idx"><a href="javascript:void(0)">{{n.title}}</a></div>
+            <div class="ptc100 ell" v-for="(n, idx) in news" :key="idx"><a href="javascript:void(0)" @click="toNewsPage(n.id)">{{n.title}}</a></div>
           </i-col>
         </Row>
       </div>
@@ -63,10 +63,10 @@
 </template>
 
 <script>
-import api from '../config/api'
-import src from './home.js'
-import Tabhead from '../components/tabhead'
-import { ossPath } from '../config/util'
+import api from '../../config/api'
+import src from './data.js'
+import Tabhead from '../../components/tabhead'
+import { ossPath } from '../../config/util'
 
 export default {
   name: 'home',
@@ -121,6 +121,10 @@ export default {
     }
   },
   methods: {
+    toNewsPage(id) {
+      this.$router.push('/news?id=' + id)
+    },
+
     getUser() {
       api.getAccountById({data: {id: 1}}).then(res => {
         this.account = res;
@@ -184,7 +188,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .ql-editor {
   min-height: 200px;
   max-height: 800px;

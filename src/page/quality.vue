@@ -31,37 +31,5 @@ export default {
 </script>
 
 <style lang="less">
-
-.banner {
-  position: relative;
-  min-height: 300px;
-  text-align: center;
-  background: url('https://mytijian-img.oss-cn-hangzhou.aliyuncs.com/hospital/117/official_site/banner.png') no-repeat center;
-  background-size: cover;
-  &-cont {
-    position: absolute;
-    width: 100%;
-    padding: 30px;
-    z-index: 2;
-    color: #000;
-  }
-  &-title {
-    font-size: 50px;
-    font-weight: bold;
-  }
-  &-subhead {
-    margin-top: 40px;
-    font-size: 20px;
-  }
-  &-mask {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: #eee;
-    opacity: .7;
-    z-index: 1;
-  }
-}
 </style>
 

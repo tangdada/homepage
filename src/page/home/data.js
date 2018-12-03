@@ -1,4 +1,4 @@
-import { ossPath } from '../config/util'
+import { ossPath } from '../../config/util'
 
 export default {
   intro: [
