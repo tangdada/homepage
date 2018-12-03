@@ -53,8 +53,8 @@ export default {
     width: 110px;
     cursor: pointer;
     &.on {
-      border-bottom: 2px solid #20a0ff;
-      color: #20a0ff;
+      border-bottom: 2px solid #00b493;
+      color: #00b493;
     }
   }
 }
