@@ -100,6 +100,8 @@ const createAsyncRequest = apiConfig => {
         context = null, catchError = true, stateName = ''
       } = config
 
+      data.token = localStorage.getItem('jwtToken') || ''; // jwt登录token
+
       const options = {}
       options.contentType = contentType
       options.params = {}
@@ -119,10 +121,13 @@ const createAsyncRequest = apiConfig => {
       return axios[method](url, isGet ? options : data, !isGet && options)
         .then(res => res.data)
         .then(res => {
+          if (res.code && res.code == 1001) {
+            res.response = res;
+            throw res;
+          }
           return res
         })
         .catch(e => {
-
           const status = e && e.response && e.response.status || ''
           const errText = e && e.response && e.response.data && (e.response.data.text || e.response.data.info)
 

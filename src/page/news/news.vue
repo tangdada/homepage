@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <Modal :footer-hide="true" v-model="modal1" title="" :mask-closable="false">
+    <Modal :footer-hide="true" v-model="modal1" title="发表评论" :mask-closable="false">
       <Form :model="form1" ref="form1" :rules="rules">
         <FormItem label="" prop="content"> 
           <i-input type="textarea" :maxlength="300" v-model.trim="form1.content" placeholder="文明社会，理性评论"></i-input>
@@ -40,7 +40,7 @@
       </Form>
 
       <div class="tr">
-        <Button type="primary" @click="ok">发布评论</Button>
+        <Button type="primary" @click="ok">发表评论</Button>
         <Button class="ml10" type="default" @click="modal1=false">取消</Button>
       </div>
     </Modal>

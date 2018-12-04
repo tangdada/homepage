@@ -2,6 +2,8 @@ import createApi from './fetch'
 
 const apis = {
   getAccountById: 'get /user/showUser',
+  getAccountInfo: 'get /user/getInfo',
+  login: 'post /user/login',
 
   addComment: 'post /comment/add',
   getCommentByArticleId: 'get /comment/all',

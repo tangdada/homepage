@@ -10,7 +10,7 @@
     <div class="fr foot">
       <a href="javascript:void(0)" @click="handleAddArticle">添加文章</a>
       <a href="javascript:void(0)" class="ml10" @click="handleLogin">登录</a>
-      <span class="ml10">{{account.name}}</span>
+      <span class="ml10">欢迎您：{{account.name}}</span>
     </div>
 
     <Modal width="80%" :footer-hide="true" v-model="modal2" title="发布文章" :mask-closable="false">
@@ -22,6 +22,23 @@
         <Button class="ml10" type="default" @click="modal2=false">取消</Button>
       </div>
     </Modal>
+
+    <Modal :footer-hide="true" v-model="modal1" title="登录" :mask-closable="false">
+      <Form :model="form1" :label-width="80" ref="form1" :rules="rules">
+        <FormItem label="用户名" prop="userName"> 
+          <i-input type="text" :maxlength="30" v-model.trim="form1.userName" placeholder="请输入用户名"></i-input>
+        </FormItem>
+        <FormItem label="密码" prop="password"> 
+          <i-input type="password" :maxlength="30" v-model.trim="form1.password" placeholder="请输入密码"></i-input>
+        </FormItem>
+      </Form>
+
+      <div class="tr">
+        <Button type="primary" @click="login">登录</Button>
+        <Button class="ml10" type="default" @click="modal1=false">取消</Button>
+      </div>
+    </Modal>
+
   </div>
 </template>
 
@@ -34,6 +51,20 @@ export default {
     return {
       currentTab: 'home',
       account: {},
+      modal1: false,
+      form1: {
+        userName: '',
+        password: ''
+      },
+      rules: {
+        userName: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+        ],
+      },
+
       modal2: false,
       form2: {
         title: '',
@@ -71,12 +102,28 @@ export default {
     },
 
     getUser() {
-      api.getAccountById({data: {id: 1}}).then(res => {
-        this.account = res;
+      api.getAccountInfo().then(res => {
+        this.account = res.data.user;
+      }, error => {
+        console.error('用户未登录')
       })
     },
 
-    handleLogin() {},
+    handleLogin() {
+      this.modal1 = true;
+    },
+
+    login() {
+      this.$refs['form1'].validate(valid => {
+        if (valid) {
+          api.login({data: this.form1, contentType: 'application/x-www-form-urlencoded'}).then(res => {
+            localStorage.setItem('jwtToken', res.data.token)
+          }, error => {
+            this.$Message.warning('用户名或者密码错误')
+          })
+        }
+      })
+    },
 
     handleAddArticle() {
       this.modal2 = true;
@@ -121,6 +168,12 @@ export default {
 </script>
 
 <style lang="less">
+.ql-editor {
+  min-height: 200px;
+  max-height: 800px;
+  overflow-y: auto;
+}
+
 .menu {
   position: relative;
   border-bottom: 1px solid #eee;
