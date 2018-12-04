@@ -8,12 +8,15 @@
     <span class="menu-item" :class="{'on': activeMenu('bookinline')}" @click="clickMenu('bookinline')">在线预约</span>
 
     <div class="fr foot">
-      <a href="javascript:void(0)" @click="handleAddArticle">添加文章</a>
-      <a href="javascript:void(0)" class="ml10" @click="handleLogin">登录</a>
-      <span class="ml10">欢迎您：{{account.name}}</span>
+      <a href="javascript:void(0)" @click="handleAddArticle" v-if="account.id && account.level == 999">添加文章</a>
+      <span class="ml10" v-if="account.id">欢迎您：{{account.name}} <a href="javascript:void(0)" class="ml10" @click="handleExit">退出</a></span>
+      <span v-else>
+        <a href="javascript:void(0)" class="ml10" @click="handleLogin">登录</a>
+        <a href="javascript:void(0)" class="ml10" @click="handleRegister">注册</a>
+      </span>
     </div>
 
-    <Modal width="80%" :footer-hide="true" v-model="modal2" title="发布文章" :mask-closable="false">
+    <Modal width="70%" :footer-hide="true" v-model="modal2" title="发布文章" :mask-closable="false">
       <div class="w400"><i-input type="text" v-model.trim="form2.title" placeholder="请输入文章标题"></i-input></div>
       <quill-editor class="mt10" v-model.trim="form2.content" :maxlength="2000" :options="editorOption"></quill-editor>
 
@@ -23,19 +26,44 @@
       </div>
     </Modal>
 
-    <Modal :footer-hide="true" v-model="modal1" title="登录" :mask-closable="false">
+    <Modal width="400px" :footer-hide="true" v-model="modal1" title="登录" :mask-closable="false">
       <Form :model="form1" :label-width="80" ref="form1" :rules="rules">
         <FormItem label="用户名" prop="userName"> 
           <i-input type="text" :maxlength="30" v-model.trim="form1.userName" placeholder="请输入用户名"></i-input>
         </FormItem>
         <FormItem label="密码" prop="password"> 
-          <i-input type="password" :maxlength="30" v-model.trim="form1.password" placeholder="请输入密码"></i-input>
+          <i-input @on-enter="login" type="password" :maxlength="30" v-model.trim="form1.password" placeholder="请输入密码"></i-input>
         </FormItem>
       </Form>
 
       <div class="tr">
         <Button type="primary" @click="login">登录</Button>
         <Button class="ml10" type="default" @click="modal1=false">取消</Button>
+      </div>
+    </Modal>
+
+    <Modal :footer-hide="true" v-model="modal3" title="注册" :mask-closable="false">
+      <Form :model="form3" :label-width="80" ref="form3" :rules="rules3" class="pr20">
+        <FormItem label="用户名" prop="userName"> 
+          <i-input type="text" :maxlength="30" v-model.trim="form3.userName" placeholder="请输入用户名"></i-input>
+        </FormItem>
+        <FormItem label="密码" prop="password"> 
+          <i-input type="password" :maxlength="30" v-model.trim="form3.password" placeholder="请输入密码"></i-input>
+        </FormItem>
+        <FormItem label="确认密码" prop="repassword"> 
+          <i-input type="password" :maxlength="30" v-model.trim="form3.repassword" placeholder="请再次输入上面的密码"></i-input>
+        </FormItem>
+        <FormItem label="昵称" prop="name"> 
+          <i-input type="text" :maxlength="30" v-model.trim="form3.name" placeholder="请输入昵称"></i-input>
+        </FormItem>
+        <FormItem label="手机" prop="mobile"> 
+          <i-input type="text" :maxlength="30" v-model.trim="form3.mobile" placeholder="请输入昵称"></i-input>
+        </FormItem>
+      </Form>
+
+      <div class="tr">
+        <Button type="primary" @click="register">注册</Button>
+        <Button class="ml10" type="default" @click="modal3=false">取消</Button>
       </div>
     </Modal>
 
@@ -48,6 +76,17 @@ import api from '../config/api'
 export default {
   name: 'mt-menu',
   data() {
+    let validatePwd = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请输入确认密码'))
+      }
+      if (value != this.form3.password) {
+        return callback(new Error('两次输入的密码不一致'))
+      } else {
+        callback();
+      }
+    };
+
     return {
       currentTab: 'home',
       account: {},
@@ -87,7 +126,31 @@ export default {
           ]
         },
         placeholder: '输入内容'
-      }
+      },
+
+      modal3: false,
+      form3: {
+        userName: '',
+        password: '',
+        repassword: '',
+        name: '',
+        mobile: '',
+      },
+      rules3: {
+        userName: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+        ],
+        repassword: [
+          { required: true, message: '请输入确认密码', trigger: 'blur' },
+          { validator: validatePwd, trigger: 'blur'}
+        ],
+        name: [
+          { required: true, message: '请输入昵称', trigger: 'blur' },
+        ],
+      },
 
     }
   },
@@ -105,19 +168,56 @@ export default {
       api.getAccountInfo().then(res => {
         this.account = res.data.user;
       }, error => {
+        this.account = {}
         console.error('用户未登录')
+      })
+    },
+
+    handleRegister() {
+      this.modal3 = true;
+      this.form3 = {
+        userName: '',
+        password: '',
+        repassword: '',
+        name: '',
+        mobile: '',
+      };
+    },
+
+    register() {
+      this.$refs['form3'].validate(valid => {
+        if (valid) {
+          let art = this.form3;
+          api.register({data: art}).then(res => {
+            this.modal3 = false;
+            this.modal1 = true;
+            this.form1.userName = this.form3.userName
+            this.$Message.success('注册成功')
+          })
+        }
       })
     },
 
     handleLogin() {
       this.modal1 = true;
+      this.form1 =  {
+        userName: '',
+        password: ''
+      }
+    },
+
+    handleExit() {
+      localStorage.setItem('jwtToken', '')
+      this.getUser()
     },
 
     login() {
       this.$refs['form1'].validate(valid => {
         if (valid) {
           api.login({data: this.form1, contentType: 'application/x-www-form-urlencoded'}).then(res => {
+            this.modal1 = false;
             localStorage.setItem('jwtToken', res.data.token)
+            this.getUser()
           }, error => {
             this.$Message.warning('用户名或者密码错误')
           })

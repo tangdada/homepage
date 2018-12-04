@@ -121,7 +121,7 @@ const createAsyncRequest = apiConfig => {
       return axios[method](url, isGet ? options : data, !isGet && options)
         .then(res => res.data)
         .then(res => {
-          if (res.code && res.code == 1001) {
+          if (res && res.code && res.code == 1001) {
             res.response = res;
             throw res;
           }

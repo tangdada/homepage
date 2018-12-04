@@ -3,6 +3,7 @@
     <header><mt-menu /></header>
     <div class="container"><router-view></router-view></div>
     <footer><mt-footer /></footer>
+    <!-- todo <div>回到顶部</div> -->
   </div>
 </template>
 

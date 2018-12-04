@@ -4,6 +4,7 @@ const apis = {
   getAccountById: 'get /user/showUser',
   getAccountInfo: 'get /user/getInfo',
   login: 'post /user/login',
+  register: 'post /user/add',
 
   addComment: 'post /comment/add',
   getCommentByArticleId: 'get /comment/all',
