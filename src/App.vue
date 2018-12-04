@@ -21,6 +21,12 @@ export default {
     
     }
   },
+
+  mounted() {
+    this.$Message.config({
+      duration: 4
+    });
+  },
 };
 </script>
 

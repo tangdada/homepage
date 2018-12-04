@@ -17,6 +17,9 @@ import 'quill/dist/quill.bubble.css'
 import VueQuillEditor from 'vue-quill-editor'
 Vue.use(VueQuillEditor)
 
+import filters from './config/filters'
+Vue.use(filters)
+
 Vue.use(VueRouter)
 const router = new VueRouter({
 	routes

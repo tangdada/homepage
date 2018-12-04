@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "iview": "^2.14.0",
+    "moment": "^2.22.2",
     "qs": "^6.6.0",
     "vue": "^2.1.0",
     "vue-quill-editor": "^3.0.6",

@@ -26,39 +26,6 @@
       </Row>
     </div>
 
-    <div>用户：{{account.name}}</div>
-    <div v-for="c in comments" :key="c.id">{{c.content}}</div>
-
-    文章：
-    <div>
-      <div class="mt10" v-for="(n, idx) in news" :key="idx">{{n.title}}</div>
-    </div>
-    首页
-    <a href="javascript:void(0)" @click="handleClick">添加评论</a>
-    <div class="tc"><a href="javascript:void(0)" @click="handleAddArticle">添加文章</a></div>
-
-    <Modal :footer-hide="true" v-model="modal1" title="" :mask-closable="false">
-      <Form :model="form1" ref="form1" :rules="rules">
-        <FormItem label="" prop="content"> 
-          <i-input type="textarea" :maxlength="300" v-model.trim="form1.content" placeholder="文明社会，理性评论"></i-input>
-        </FormItem>
-      </Form>
-
-      <div class="tr">
-        <Button type="primary" @click="ok">发布评论</Button>
-        <Button class="ml10" type="default" @click="modal1=false">取消</Button>
-      </div>
-    </Modal>
-
-    <Modal width="80%" :footer-hide="true" v-model="modal2" title="发布文章" :mask-closable="false">
-      <div class="w400"><i-input type="text" v-model.trim="form2.title" placeholder="请输入文章标题"></i-input></div>
-      <quill-editor class="mt10" v-model.trim="form2.content" :maxlength="2000" :options="editorOption"></quill-editor>
-
-      <div class="tr mt10">
-        <Button type="primary" @click="saveArticle">发布文章</Button>
-        <Button class="ml10" type="default" @click="modal2=false">取消</Button>
-      </div>
-    </Modal>
   </div>
 </template>
 
@@ -73,43 +40,7 @@ export default {
   data() {
     return {
       src: src,
-      modal1: false,
-      form1: {
-        articleId: 1,
-        content: ''
-      },
-      rules: {
-        content: [
-          { required: true, message: '请输入内容', trigger: 'blur' },
-        ],
-      },
-      account: {},
-      comments: [],
       news: [],
-
-      modal2: false,
-      form2: {
-        title: '',
-        content: ''
-      },
-      rules2: {
-        content: [
-          { required: true, message: '请输入内容', trigger: 'blur' },
-        ],
-      },
-      editorOption: {
-        modules: {
-          toolbar: [
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-            [{ header: 1 }, { header: 2 }],
-            [{ align: [] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            // ['image'],
-          ]
-        },
-        placeholder: '输入内容'
-      }
     }
   },
   components: {
@@ -125,64 +56,14 @@ export default {
       this.$router.push('/news?id=' + id)
     },
 
-    getUser() {
-      api.getAccountById({data: {id: 1}}).then(res => {
-        this.account = res;
-      })
-    },
-
     getAllNews() {
       api.getArticle().then(res => {
         this.news = res;
       })
     },
-
-    getComment(articleId) {
-      api.getCommentByArticleId({data: {id: articleId}}).then(res => {
-        this.comments = res;
-      })
-    },
-
-    saveArticle() {
-      if (!this.form2.title) {
-        this.$Message.warning('文章标题不能为空')
-        return;
-      }
-      if (!this.form2.content) {
-        this.$Message.warning('文章内容不能为空')
-        return;
-      }
-      let art = this.form2
-      api.addArticle({data: art}).then(res => {
-        this.modal2 = false;
-        this.$Message.success('发布文章成功')
-        this.getAllNews()
-      })
-    },
-
-    handleClick() {
-      this.modal1 = true;
-    },
-
-    handleAddArticle() {
-      this.modal2 = true;
-    },
-
-    ok() {
-      this.$refs['form1'].validate(valid => {
-        let come = this.form1
-        api.addComment({data: come}).then(res => {
-          this.modal1 = false;
-          this.$Message.success('评论成功')
-          this.getComment(1)
-        })
-      })
-    }
   },
 
   mounted() {
-    this.getUser()
-    this.getComment(1)
     this.getAllNews()
   }
 }

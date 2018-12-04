@@ -1,9 +1,49 @@
 <template>
   <div class="content-wrap">
-    <div>{{article.title}}</div>
-    <div>
-      <pre>{{article.content}}</pre>
+    <Breadcrumb class="pt10 pb10">
+      <BreadcrumbItem to="/home">首页</BreadcrumbItem>
+      <BreadcrumbItem>新闻资讯</BreadcrumbItem>
+    </Breadcrumb>
+
+    <div class="news-title bdr-b">
+      <div class="b">{{article.title}}</div>
+      <div class="tl c-gray f14 mt10">{{article.createTime | formatDateTime}}</div>
     </div>
+    <div class="news-content mb20">
+      <pre v-html="article.content"></pre>
+    </div>
+    <div class="tr"><a href="javascript:void(0)" @click="handleClick">添加评论</a></div>
+
+    <div class="comments">
+      <div class="pt10 pb10 bdr-b f16"><Icon type="ios-chatboxes-outline"></Icon> 评论</div>
+      <div v-for="c in comments" :key="c.id">
+        <div class="comments-cont bdr-b">
+          <div class="clearfix c-9">
+            <span class="fl">{{c.userName}}</span>
+            <span class="fr">{{c.createTime | formatDateTime}}</span>
+          </div>
+          <div class="mt10">{{c.content}}</div>
+          <div class="tr">
+            <a href="javascript:void(0)">顶 [{{c.praise || 0}}]</a>
+            <a href="javascript:void(0)" class="ml20">踩 [{{c.oppose || 0}}]</a>
+          </div>
+          <div class="portrait c-9 f18"><Icon type="person"></Icon></div>
+        </div>
+      </div>
+    </div>
+
+    <Modal :footer-hide="true" v-model="modal1" title="" :mask-closable="false">
+      <Form :model="form1" ref="form1" :rules="rules">
+        <FormItem label="" prop="content"> 
+          <i-input type="textarea" :maxlength="300" v-model.trim="form1.content" placeholder="文明社会，理性评论"></i-input>
+        </FormItem>
+      </Form>
+
+      <div class="tr">
+        <Button type="primary" @click="ok">发布评论</Button>
+        <Button class="ml10" type="default" @click="modal1=false">取消</Button>
+      </div>
+    </Modal>
 
   </div>
 </template>
@@ -15,7 +55,18 @@ export default {
   name: 'news',
   data() {
     return {
-      article: {}
+      article: {},
+      comments: [],
+      modal1: false,
+      form1: {
+        articleId: this.$route.query.id,
+        content: ''
+      },
+      rules: {
+        content: [
+          { required: true, message: '请输入内容', trigger: 'blur' },
+        ],
+      },
     }
   },
   methods: {
@@ -23,15 +74,63 @@ export default {
       api.getArticleById({data: {id: id}}).then(res => {
         this.article = res;
       })
-    }
+    },
+
+    getComment(articleId) {
+      api.getCommentByArticleId({data: {id: articleId}}).then(res => {
+        this.comments = res;
+      })
+    },
+
+    handleClick() {
+      this.modal1 = true;
+    },
+
+    ok() {
+      this.$refs['form1'].validate(valid => {
+        if (valid) {
+          let come = this.form1
+          api.addComment({data: come}).then(res => {
+            this.modal1 = false;
+            this.$Message.success('评论成功')
+            this.getComment(this.form1.articleId)
+          })
+        }
+      })
+    },
+
   },
 
   mounted() {
-    this.getArticle(this.$route.query.id)
+    this.getArticle(this.form1.articleId)
+    this.getComment(this.form1.articleId)
   }
 }
 </script>
 
 <style lang="less">
+.news-title {
+  text-align: center;
+  font-size: 34px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+.news-content pre {
+  white-space: pre-wrap;
+}
+
+.comments-cont {
+  position: relative;
+  padding: 20px;
+  padding-left: 80px;
+  &:hover {
+    background: #efefef;
+  }
+  .portrait {
+    position: absolute;
+    top: 17px;
+    left: 10px;
+  }
+}
 </style>
 
