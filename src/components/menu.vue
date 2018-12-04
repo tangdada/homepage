@@ -9,7 +9,7 @@
 
     <div class="fr foot">
       <a href="javascript:void(0)" @click="handleAddArticle" v-if="account.id && account.level == 999">添加文章</a>
-      <span class="ml10" v-if="account.id">欢迎您：{{account.name}} <a href="javascript:void(0)" class="ml10" @click="handleExit">退出</a></span>
+      <span class="ml10" v-if="account.id">欢迎您：{{account.name}} <a href="javascript:void(0)" class="ml10" @click="logout">退出</a></span>
       <span v-else>
         <a href="javascript:void(0)" class="ml10" @click="handleLogin">登录</a>
         <a href="javascript:void(0)" class="ml10" @click="handleRegister">注册</a>
@@ -167,6 +167,7 @@ export default {
     getUser() {
       api.getAccountInfo().then(res => {
         this.account = res.data.user;
+        this.$store.commit('user/INIT_ACCOUNT', res.data.user)
       }, error => {
         this.account = {}
         console.error('用户未登录')
@@ -206,8 +207,9 @@ export default {
       }
     },
 
-    handleExit() {
+    logout() {
       localStorage.setItem('jwtToken', '')
+      this.$store.commit('user/INIT_ACCOUNT', {})
       this.getUser()
     },
 

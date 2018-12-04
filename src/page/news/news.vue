@@ -12,7 +12,7 @@
     <div class="news-content mb20">
       <pre v-html="article.content"></pre>
     </div>
-    <div class="tr"><a href="javascript:void(0)" @click="handleClick">添加评论</a></div>
+    <div class="tr"><a href="javascript:void(0)" @click="handleDiscuss">添加评论</a></div>
 
     <div class="comments">
       <div class="pt10 pb10 bdr-b f16"><Icon type="ios-chatboxes-outline"></Icon> 评论</div>
@@ -24,8 +24,8 @@
           </div>
           <div class="mt10">{{c.content}}</div>
           <div class="tr">
-            <a href="javascript:void(0)">顶 [{{c.praise || 0}}]</a>
-            <a href="javascript:void(0)" class="ml20">踩 [{{c.oppose || 0}}]</a>
+            <a href="javascript:void(0)" @click="handleOppose">顶 [{{c.praise || 0}}]</a>
+            <a href="javascript:void(0)" @click="handlePraise" class="ml20">踩 [{{c.oppose || 0}}]</a>
           </div>
           <div class="portrait c-9 f18"><Icon type="person"></Icon></div>
         </div>
@@ -50,6 +50,7 @@
 
 <script>
 import api from '../../config/api'
+import { mapState } from 'vuex'
 
 export default {
   name: 'news',
@@ -69,6 +70,12 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapState({
+      account: state => state.accountInfo
+    }),
+  },
+
   methods: {
     getArticle(id) {
       api.getArticleById({data: {id: id}}).then(res => {
@@ -82,8 +89,25 @@ export default {
       })
     },
 
-    handleClick() {
+    handleDiscuss() {
+      if (!this.account.id) {
+        this.$Message.warning('请先登录')
+        return
+      }
       this.modal1 = true;
+    },
+
+    handlePraise() {
+      if (!this.account.id) {
+        this.$Message.warning('请先登录')
+        return
+      }
+    },
+    handleOppose() {
+      if (!this.account.id) {
+        this.$Message.warning('请先登录')
+        return
+      }
     },
 
     ok() {
