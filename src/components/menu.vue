@@ -275,23 +275,6 @@ export default {
   max-height: 800px;
   overflow-y: auto;
 }
-
-.menu {
-  position: relative;
-  border-bottom: 1px solid #eee;
-  font-size: 18px;
-  &-item {
-    display: inline-block;
-    text-align: center;
-    padding: 20px;
-    width: 120px;
-    cursor: pointer;
-    &.on {
-      border-bottom: 2px solid #00b493;
-      color: #00b493;
-    }
-  }
-}
 .foot {
   position: absolute;
   margin-right: 20px;

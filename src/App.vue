@@ -40,12 +40,17 @@ export default {
   flex-direction: column;
   height: 100%;
   .container{
-  flex: 1 0 auto;
+    flex: 1 0 auto;
+    margin-top: 70px;
   }
   header{
     /* 我们希望 header 采用固定的高度，只占用必须的空间 */
     /* 0 flex-grow, 0 flex-shrink, auto flex-basis */
     flex: 0 0 auto;
+    position: fixed;
+    width: 100%;
+    background: #fff;
+    z-index: 999;
   }
   footer{
     /* 和 header 一样，footer 也采用固定高度*/

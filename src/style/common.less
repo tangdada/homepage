@@ -45,7 +45,7 @@ body {
 }
 .content-wrap {
   margin: 0 auto;
-  width: 990px;
+  max-width: 990px;
 }
 
 @primary-color          : #34c0e3;
@@ -184,5 +184,42 @@ body {
   to {
     opacity: 1;
     margin-top: 0;
+  }
+}
+.banner {
+  position: relative;
+  min-height: 300px;
+  text-align: center;
+  background: url('https://mytijian-img.oss-cn-hangzhou.aliyuncs.com/hospital/117/official_site/banner.png') no-repeat center;
+  background-size: cover;
+  &.big {
+    min-height: 600px;
+    background: url('https://mytijian-img.oss-cn-hangzhou.aliyuncs.com/hospital/117/official_site/117.jpg') no-repeat;
+    background-size: cover;
+    background-position: 0% 15%;
+  }
+  &-title {
+    font-size: 50px;
+    font-weight: bold;
+  }
+  &-subhead {
+    margin-top: 40px;
+    font-size: 20px;
+  }
+}
+.menu {
+  position: relative;
+  border-bottom: 1px solid #eee;
+  font-size: 18px;
+  &-item {
+    display: inline-block;
+    text-align: center;
+    padding: 20px;
+    width: 120px;
+    cursor: pointer;
+    &.on {
+      border-bottom: 2px solid #00b493;
+      color: #00b493;
+    }
   }
 }
