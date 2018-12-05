@@ -3,20 +3,36 @@
     <header><mt-menu /></header>
     <div class="container"><router-view></router-view></div>
     <footer><mt-footer /></footer>
-    <!-- todo <div>回到顶部</div> -->
+    <back-top v-if="show"/>
   </div>
 </template>
 
 <script>
 import Menu from './components/menu'
 import Footer from './components/footer'
+import Backtop from './components/backtop'
 
 export default {
+  data() {
+    return {
+      show: false,
+    }
+  },
   components: {
     'mt-menu': Menu,
     'mt-footer': Footer,
+    'back-top': Backtop,
   },
-
+  methods: {
+    handleScroll () {
+      let scrollTop = window.pageYOffset || document.body.scrollTop
+      if (scrollTop > 250) {
+        this.show = true
+      } else {
+        this.show = false
+      }
+    },
+  },
   watch: {
     $route (val, oldVal) {
     
@@ -27,6 +43,8 @@ export default {
     this.$Message.config({
       duration: 4
     });
+
+    window.addEventListener('scroll', this.handleScroll, true)
   },
 };
 </script>
