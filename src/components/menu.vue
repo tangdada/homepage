@@ -156,8 +156,12 @@ export default {
   },
   methods: {
     clickMenu(menu) {
-      this.currentTab = menu;
-      this.$router.push('/' + menu)
+      if (menu == 'bookinline') {
+        window.location.href = 'https://www.mytijian.com/m/117'
+      } else {
+        this.currentTab = menu;
+        this.$router.push('/' + menu)
+      }
     },
 
     activeMenu(menu) {

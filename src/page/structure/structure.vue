@@ -9,7 +9,7 @@
     </div>
 
     <div class="content-wrap">
-      <Row class="big-menu f18 bdr-b">
+      <Row class="f18 bdr-b">
         <i-col :span="8" class="menu-item" :class="{'on': currentTab == 'tab1'}" @click.native="changeTab('tab1')">医院总体布局和情况</i-col>
         <i-col :span="8" class="menu-item" :class="{'on': currentTab == 'tab2'}" @click.native="changeTab('tab2')">科室布局和工作制度</i-col>
         <i-col :span="8" class="menu-item" :class="{'on': currentTab == 'tab3'}" @click.native="changeTab('tab3')">数据传输和对接</i-col>

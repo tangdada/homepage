@@ -201,6 +201,36 @@ body {
   }
 }
 
+.mt-table {
+  width: 100%;
+  table-layout: fixed;
+  word-break: break-all;
+  border: 1px solid #dddee1;
+  border-collapse: collapse;
+  td,th {
+    vertical-align: middle;
+    height: 40px;
+    padding: 8px 8px 8px 15px;
+    text-align: left;
+    font-size: 14px;
+  }
+  td {
+    border-top: 1px solid #e9eaec;
+  }
+  th {
+    background: #f8f8f9;
+    border-bottom: none;
+    color: #495060;
+    font-weight: normal;
+  }
+  &:not(.dis-hover) tr:hover {
+    background-color: #eee;
+  }
+  .mt-table-column{
+    text-align: center !important;
+  }
+}
+
 .banner {
   position: relative;
   min-height: 300px;
