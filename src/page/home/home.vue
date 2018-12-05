@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <div class="banner big">
-      <div class="banner-cont fadein" style="padding: 100px;">
+    <div class="big-banner">
+      <div class="banner-cont down" style="padding: 100px;">
         <div class="banner-title">中国人民解放军第一一七医院</div>
         <div class="banner-subhead pct50 fr">中国人民解放军第一一七医院是南京军区所属的一所综合性三级甲等医院，医院位于杭州市灵隐风景区，院内绿树成荫、空气清新、环境优美，是驻浙陆海空三军唯一一所集医疗、教育、科研和预防保健于一体的中心医院。</div>
       </div>
@@ -73,6 +73,30 @@ export default {
   min-height: 200px;
   max-height: 800px;
   overflow-y: auto;
+}
+
+.big-banner {
+  position: relative;
+  text-align: center;
+  min-height: 600px;
+  background: url('https://mytijian-img.oss-cn-hangzhou.aliyuncs.com/hospital/117/official_site/117.jpg') no-repeat;
+  background-size: cover;
+  background-position: 0% 15%;
+  &-cont {
+    position: absolute;
+    width: 100%;
+    padding: 30px;
+    z-index: 2;
+    color: #000;
+  }
+  &-title {
+    font-size: 50px;
+    font-weight: bold;
+  }
+  &-subhead {
+    margin-top: 40px;
+    font-size: 20px;
+  }
 }
 
 .img-panel {
