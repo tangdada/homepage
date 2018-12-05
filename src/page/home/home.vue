@@ -87,7 +87,6 @@ export default {
     width: 100%;
     padding: 30px;
     z-index: 2;
-    color: #000;
   }
   &-title {
     font-size: 50px;
