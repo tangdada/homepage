@@ -24,8 +24,8 @@
           </div>
           <div class="mt10">{{c.content}}</div>
           <div class="tr">
-            <a href="javascript:void(0)" @click="handleOppose">顶 [{{c.praise || 0}}]</a>
-            <a href="javascript:void(0)" @click="handlePraise" class="ml20">踩 [{{c.oppose || 0}}]</a>
+            <a href="javascript:void(0)" @click="handlePraise(c)">顶 [{{c.praise.length || 0}}]</a>
+            <a href="javascript:void(0)" @click="handleOppose(c)" class="ml20">踩 [{{c.oppose.length || 0}}]</a>
           </div>
           <div class="portrait c-9 f18"><Icon type="person"></Icon></div>
         </div>
@@ -85,7 +85,13 @@ export default {
 
     getComment(articleId) {
       api.getCommentByArticleId({data: {id: articleId}}).then(res => {
-        this.comments = res;
+        this.comments = (res || []).map(item => {
+          item.praise = item.praise ? item.praise.split(',') : [];
+          item.oppose = item.oppose ? item.oppose.split(',') : [];
+          return item;
+        }).sort((a, b) => {
+          return b.praise.length - a.praise.length;
+        });
       })
     },
 
@@ -97,17 +103,45 @@ export default {
       this.modal1 = true;
     },
 
-    handlePraise() {
+    handlePraise(comment) {
       if (!this.account.id) {
         this.$Message.warning('请先登录')
         return
       }
+      let accountId = this.account.id + ''
+      let idx = comment.praise.indexOf(accountId);
+      if (idx > -1) {
+        comment.praise.splice(idx, 1)
+      } else {
+        comment.praise.push(accountId)
+      }
+      let pms = {
+        id: comment.id,
+        praise: comment.praise.join(',')
+      }
+      api.updateComment({data: pms}).then(res => {
+        
+      })
     },
-    handleOppose() {
+    handleOppose(comment) {
       if (!this.account.id) {
         this.$Message.warning('请先登录')
         return
       }
+      let accountId = this.account.id + ''
+      let idx = comment.oppose.indexOf(accountId);
+      if (idx > -1) {
+        comment.oppose.splice(idx, 1)
+      } else {
+        comment.oppose.push(accountId)
+      }
+      let pms = {
+        id: comment.id,
+        oppose: comment.oppose.join(',')
+      }
+      api.updateComment({data: pms}).then(res => {
+
+      })
     },
 
     ok() {

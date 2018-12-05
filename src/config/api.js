@@ -8,6 +8,7 @@ const apis = {
 
   addComment: 'post /comment/add',
   getCommentByArticleId: 'get /comment/all',
+  updateComment: 'post /comment/updateSelective',
 
   addArticle: 'post /news/add',
   getArticle: 'get /news/all',
