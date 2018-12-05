@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="banner">
+    <div class="banner bg-2">
       <div class="banner-cont down">
         <div class="banner-title">组织实施方案</div>
         <div class="banner-subhead">医院健康管理中心设有：内科、外科、耳鼻喉科、眼科、口腔科、妇科、放射科、超声室、心电图室、骨密度室、肠镜室、肺功能室、动脉硬化室、颅脑多普勒室等专业科室，科室齐全。中心编制了《健康体检中心工作制度与服务规范》手册，规范体检工作制度、操作流程和服务规范，确保体检工作有序运行。</div>
