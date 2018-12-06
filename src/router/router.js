@@ -3,6 +3,7 @@ import App from '../App'
 export default [{
 	path: '/',
 	component: App,
+	redirect: '/home',
 	children: [
 		{ path: 'home', component: r => require.ensure([], () => r(require('../page/home/home.vue')), 'home') },
 		{ path: 'structure', component: r => require.ensure([], () => r(require('../page/structure/structure')), 'structure') },
