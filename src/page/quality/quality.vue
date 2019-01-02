@@ -10,7 +10,7 @@
         <div v-for="(s, idx) in services" :key="idx" class="mb20">
           <tab-head :title="s.name" class="mb20"/>
           <div v-for="(p, ix) in s.panels" :key="ix">
-            <div class="imgs">
+            <div class="imgs clearfix">
               <div class="img-wrap" v-for="(img, i) in p.imgs" :key="i">
                 <img :src="img.name" />
               </div>

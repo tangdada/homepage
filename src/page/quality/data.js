@@ -38,7 +38,7 @@ export default [
     panels: [
       {
         imgs: [
-          { name: ossPath + 'cuoshi0107.png', },
+          // { name: ossPath + 'cuoshi0107.png', },
           { name: ossPath + 'cuoshi0201.png', },
         ],
         desc: [

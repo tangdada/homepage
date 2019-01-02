@@ -11,7 +11,7 @@
     <div class="content-wrap pt20">
       <div v-for="(s, idx) in services" :key="idx" class="mb20">
         <tab-head :title="s.name" class="mb20"/>
-        <div class="imgs">
+        <div class="imgs clearfix">
           <div class="img-wrap" v-for="(img, i) in s.imgs" :key="i">
             <img :src="img.name" />
           </div>
