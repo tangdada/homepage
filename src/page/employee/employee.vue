@@ -10,10 +10,18 @@
 
     <div class="content-wrap">
       <Row class="f18 bdr-b">
+        <i-col :span="8" class="menu-item" :class="{'on': currentTab == 'tab0'}" @click.native="changeTab('tab0')">科室管理人员</i-col>
         <i-col :span="8" class="menu-item" :class="{'on': currentTab == 'tab1'}" @click.native="changeTab('tab1')">医师信息</i-col>
-        <i-col :span="8" class="menu-item" :class="{'on': currentTab == 'tab2'}" @click.native="changeTab('tab2')">证件图照</i-col>
+        <!-- <i-col :span="8" class="menu-item" :class="{'on': currentTab == 'tab2'}" @click.native="changeTab('tab2')">证件图照</i-col> -->
         <i-col :span="8" class="menu-item" :class="{'on': currentTab == 'tab3'}" @click.native="changeTab('tab3')">体检设备</i-col>
       </Row>
+
+      <div v-if="currentTab == 'tab0'">
+        <Row v-for="(s, idx) in src.tab0" :key="idx" class="img-panel">
+          <i-col :span="6" class="p20 tr"><img width="170" :src="s.img" /></i-col>
+          <i-col :span="18" class="p20">{{s.desc}}</i-col>
+        </Row>
+      </div>
 
       <div v-if="currentTab == 'tab1'" class="mt20">
         <table class="mt-table">
@@ -88,7 +96,7 @@ export default {
   name: 'employee',
   data() {
     return {
-      currentTab: 'tab1',
+      currentTab: 'tab0',
       src: src,
     }
   },

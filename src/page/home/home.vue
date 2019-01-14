@@ -101,7 +101,7 @@ export default {
 .img-panel {
   img {
     width: 100%;
-    height: 100%;
+    height: 220px;
   }
 }
 
