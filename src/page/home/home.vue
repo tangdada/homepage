@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <div class="big-banner">
+      <img class="logo" :src="src.logo" />
       <div class="banner-cont down" style="padding: 100px;">
         <div class="banner-title">中国人民解放军联勤保障部队第903医院</div>
         <div class="banner-subhead pct50 fr">中国人民解放军联勤保障部队第903医院是南京军区所属的一所综合性三级甲等医院，医院位于杭州市灵隐风景区，院内绿树成荫、空气清新、环境优美，是驻浙陆海空三军唯一一所集医疗、教育、科研和预防保健于一体的中心医院。</div>
@@ -95,6 +96,11 @@ export default {
   &-subhead {
     margin-top: 40px;
     font-size: 20px;
+  }
+  .logo {
+    width: 100px;
+    position: absolute;
+    right: 4px;
   }
 }
 
