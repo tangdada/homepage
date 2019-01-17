@@ -93,15 +93,15 @@ export default {
     font-size: 50px;
     font-weight: bold;
   }
-  &-subhead {
-    margin-top: 40px;
-    font-size: 20px;
-  }
   .logo {
-    width: 100px;
+    width: 250px;
     position: absolute;
     right: 4px;
   }
+}
+.banner-subhead {
+  margin-top: 80px;
+  font-size: 20px;
 }
 
 .img-panel {
